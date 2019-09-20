@@ -12,7 +12,7 @@ export default [
     plugins: plugins,
     output: {
       format: 'umd',
-      file: __dirname + '/dist/statickit-react.umd.js',
+      file: __dirname + '/dist/statickit.umd.js',
       name: 'StaticKit'
     }
   },
@@ -21,7 +21,7 @@ export default [
     plugins: plugins,
     output: {
       format: 'esm',
-      file: __dirname + '/dist/statickit-react.esm.js',
+      file: __dirname + '/dist/statickit.esm.js',
       name: 'StaticKit'
     }
   }
