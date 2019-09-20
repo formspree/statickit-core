@@ -13,8 +13,7 @@
   "module": "dist/statickit.esm.js",
   "scripts": {
     "build": "rollup -c",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prettify": "npx prettier --write 'src/**/*.js'"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
@@ -32,7 +31,7 @@
   },
   "lint-staged": {
     "*.{js,css,json,md}": [
-      "npm run prettify",
+      "npx prettier --write",
       "git add"
     ]
   }
