@@ -1391,7 +1391,7 @@
 
 	              case 2:
 	                endpoint = props.endpoint || 'https://api.statickit.com';
-	                url = "".concat(endpoint, "/j/forms/").concat(id, "/submissions");
+	                url = "".concat(endpoint, "/j/forms/").concat(props.id, "/submissions");
 	                data = props.data || {};
 	                session = assign$1({}, this.session, {
 	                  submittedAt: 1 * new Date()

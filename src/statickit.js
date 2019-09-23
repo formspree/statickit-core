@@ -34,7 +34,7 @@ class StaticKit {
     }
 
     const endpoint = props.endpoint || 'https://api.statickit.com';
-    const url = `${endpoint}/j/forms/${id}/submissions`;
+    const url = `${endpoint}/j/forms/${props.id}/submissions`;
     const data = props.data || {};
     const session = assign({}, this.session, {
       submittedAt: 1 * new Date()
