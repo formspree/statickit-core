@@ -34,5 +34,8 @@
       "npx prettier --write",
       "git add"
     ]
+  },
+  "dependencies": {
+    "core-js-pure": "^3.2.1"
   }
 }
