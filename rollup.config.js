@@ -1,9 +1,13 @@
 import babel from 'rollup-plugin-babel';
+import nodeResolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
 
 const plugins = [
   babel({
     exclude: 'node_modules/**'
-  })
+  }),
+  nodeResolve(),
+  commonjs()
 ];
 
 export default [

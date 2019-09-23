@@ -1,5 +1,5 @@
 import { encode, append } from './util';
-import Object from 'core-js-pure/stable/object';
+import assign from 'core-js-pure/features/object/assign';
 
 class StaticKit {
   constructor() {
@@ -36,7 +36,7 @@ class StaticKit {
     const endpoint = props.endpoint || 'https://api.statickit.com';
     const url = `${endpoint}/j/forms/${id}/submissions`;
     const data = props.data || {};
-    const session = Object.assign({}, this.session, {
+    const session = assign({}, this.session, {
       submittedAt: 1 * new Date()
     });
 
