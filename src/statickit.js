@@ -1,5 +1,5 @@
 import { encode, append } from './util';
-import assign from 'core-js-pure/features/object/assign';
+import assign from 'core-js-pure/stable/object/assign';
 
 class StaticKit {
   constructor() {
