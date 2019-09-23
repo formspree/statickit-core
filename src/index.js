@@ -1,6 +1,8 @@
 import StaticKit from './statickit';
-import 'regenerator-runtime/runtime';
 
+/**
+ * Constructs the client object.
+ */
 export default () => {
   return new StaticKit();
 };

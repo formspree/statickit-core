@@ -26,7 +26,8 @@ class StaticKit {
   /**
    * Submits a form.
    *
-   * @param {Object} props
+   * @param {object} props
+   * @returns {object}
    */
   async submitForm(props) {
     if (!props.id) {

@@ -850,18 +850,19 @@ var createClass = _createClass;
 /**
  * Base-64 encodes a (JSON-castable) object.
  *
- * @param {Object} obj
+ * @param {object} obj - The object to encode.
+ * @returns {string}
  */
 
 var encode = function encode(obj) {
-  window.btoa(JSON.stringify(obj));
+  return window.btoa(JSON.stringify(obj));
 };
 /**
  * Appends a key-value pair to a target.
  *
- * @param {Object|FormData} target
- * @param {String} key
- * @param {String} value
+ * @param {object|FormData} target
+ * @param {string} key
+ * @param {string} value
  */
 
 var append = function append(target, key, value) {
@@ -1361,7 +1362,8 @@ function () {
   /**
    * Submits a form.
    *
-   * @param {Object} props
+   * @param {object} props
+   * @returns {object}
    */
 
 
@@ -1428,6 +1430,10 @@ function () {
 
   return StaticKit;
 }();
+
+/**
+ * Constructs the client object.
+ */
 
 var index = (function () {
   return new StaticKit();
