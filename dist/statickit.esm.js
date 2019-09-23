@@ -1430,10 +1430,10 @@ function () {
 
   return StaticKit;
 }();
-
 /**
  * Constructs the client object.
  */
+
 
 var index = (function () {
   return new StaticKit();
