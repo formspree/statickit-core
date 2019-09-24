@@ -39,7 +39,6 @@
     ]
   },
   "dependencies": {
-    "@babel/runtime": "^7.6.0",
-    "core-js-pure": "^3.2.1"
+    "@babel/runtime": "^7.6.0"
   }
 }

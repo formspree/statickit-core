@@ -1,5 +1,5 @@
 import { encode, append } from './util';
-import assign from 'core-js-pure/stable/object/assign';
+import './polyfills';
 
 class StaticKit {
   constructor() {
@@ -14,13 +14,24 @@ class StaticKit {
         !!window._phantom
     };
 
-    window.addEventListener('mousemove', () => {
+    this._onMouseMove = () => {
       this.session.mousemove += 1;
-    });
+    };
 
-    window.addEventListener('keydown', () => {
+    this._onKeyDown = () => {
       this.session.keydown += 1;
-    });
+    };
+
+    window.addEventListener('mousemove', this._onMouseMove);
+    window.addEventListener('keydown', this._onKeyDown);
+  }
+
+  /**
+   * Tears down the client instance.
+   */
+  teardown() {
+    window.removeEventListener('mousemove', this._onMouseMove);
+    window.removeEventListener('keydown', this._onKeyDown);
   }
 
   /**
@@ -37,7 +48,7 @@ class StaticKit {
     const endpoint = props.endpoint || 'https://api.statickit.com';
     const url = `${endpoint}/j/forms/${props.id}/submissions`;
     const data = props.data || {};
-    const session = assign({}, this.session, {
+    const session = Object.assign({}, this.session, {
       submittedAt: 1 * new Date()
     });
 
