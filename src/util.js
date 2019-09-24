@@ -1,4 +1,4 @@
-import './base64';
+import { btoa } from './base64';
 
 /**
  * Base-64 encodes a (JSON-castable) object.
@@ -7,7 +7,7 @@ import './base64';
  * @returns {string}
  */
 export const encode = obj => {
-  return window.btoa(JSON.stringify(obj));
+  return btoa(JSON.stringify(obj));
 };
 
 /**
