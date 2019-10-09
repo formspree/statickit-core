@@ -57,7 +57,7 @@ class StaticKit {
     const response = await fetch(url, {
       method: 'POST',
       mode: 'cors',
-      body: data
+      body: JSON.stringify(data)
     });
 
     const body = await response.json();
