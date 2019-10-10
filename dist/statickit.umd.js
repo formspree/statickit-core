@@ -845,7 +845,7 @@
 	  if (target.append) {
 	    target.append(key, value);
 	  } else {
-	    data[key] = value;
+	    target[key] = value;
 	  }
 	};
 
