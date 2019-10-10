@@ -4,8 +4,6 @@ import Promise from 'promise-polyfill';
 import fetchPonyfill from 'fetch-ponyfill';
 import objectAssign from 'object-assign';
 
-const { fetch } = fetchPonyfill({ Promise });
-
 const serializeBody = data => {
   if (data instanceof FormData) return data;
   JSON.stringify(data);
@@ -59,6 +57,7 @@ StaticKit.prototype.submitForm = function submitForm(props) {
     throw new Error('You must provide an `id` for the form');
   }
 
+  const fetchImpl = props.fetchImpl || fetchPonyfill({ Promise }).fetch;
   const endpoint = props.endpoint || 'https://api.statickit.com';
   const url = `${endpoint}/j/forms/${props.id}/submissions`;
   const data = props.data || {};
@@ -80,7 +79,7 @@ StaticKit.prototype.submitForm = function submitForm(props) {
     };
   }
 
-  return fetch(url, request).then(response => {
+  return fetchImpl(url, request).then(response => {
     return response.json().then(body => {
       return { body, response };
     });

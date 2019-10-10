@@ -915,11 +915,6 @@
   	return to;
   };
 
-  var _fetchPonyfill = fetchBrowser({
-    Promise: Promise
-  }),
-      fetch = _fetchPonyfill.fetch;
-
   var serializeBody = function serializeBody(data) {
     if (data instanceof FormData) return data;
     JSON.stringify(data);
@@ -974,6 +969,9 @@
       throw new Error('You must provide an `id` for the form');
     }
 
+    var fetchImpl = props.fetchImpl || fetchBrowser({
+      Promise: Promise
+    }).fetch;
     var endpoint = props.endpoint || 'https://api.statickit.com';
     var url = "".concat(endpoint, "/j/forms/").concat(props.id, "/submissions");
     var data = props.data || {};
@@ -993,7 +991,7 @@
       };
     }
 
-    return fetch(url, request).then(function (response) {
+    return fetchImpl(url, request).then(function (response) {
       return response.json().then(function (body) {
         return {
           body: body,
