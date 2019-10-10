@@ -6,7 +6,9 @@ const plugins = [
   babel({
     exclude: 'node_modules/**'
   }),
-  nodeResolve(),
+  nodeResolve({
+    browser: true
+  }),
   commonjs()
 ];
 

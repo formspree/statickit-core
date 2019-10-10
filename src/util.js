@@ -18,7 +18,7 @@ export const encode = obj => {
  * @param {string} value
  */
 export const append = (target, key, value) => {
-  if (target.append) {
+  if (target instanceof FormData) {
     target.append(key, value);
   } else {
     target[key] = value;

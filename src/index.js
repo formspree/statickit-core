@@ -1,5 +1,10 @@
 import { encode, append } from './util';
-import './polyfills';
+
+import Promise from 'promise-polyfill';
+import fetchPonyfill from 'fetch-ponyfill';
+import objectAssign from 'object-assign';
+
+const { fetch } = fetchPonyfill({ Promise });
 
 const serializeBody = data => {
   if (data instanceof FormData) return data;
@@ -57,7 +62,7 @@ StaticKit.prototype.submitForm = function submitForm(props) {
   const endpoint = props.endpoint || 'https://api.statickit.com';
   const url = `${endpoint}/j/forms/${props.id}/submissions`;
   const data = props.data || {};
-  const session = Object.assign({}, this.session, {
+  const session = objectAssign({}, this.session, {
     submittedAt: 1 * new Date()
   });
 
