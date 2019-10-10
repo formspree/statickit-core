@@ -874,6 +874,11 @@ if (typeof Object.assign !== 'function') {
   });
 }
 
+var serializeBody = function serializeBody(data) {
+  if (data instanceof FormData) return data;
+  JSON.stringify(data);
+};
+
 var StaticKit =
 /*#__PURE__*/
 function () {
@@ -924,7 +929,7 @@ function () {
       var _submitForm = asyncToGenerator(
       /*#__PURE__*/
       regenerator.mark(function _callee(props) {
-        var endpoint, url, data, session, response, body;
+        var endpoint, url, data, session, request, response, body;
         return regenerator.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -944,26 +949,34 @@ function () {
                   submittedAt: 1 * new Date()
                 });
                 append(data, '_t', encode(session));
-                _context.next = 9;
-                return fetch(url, {
+                request = {
                   method: 'POST',
                   mode: 'cors',
-                  body: data
-                });
+                  body: serializeBody(data)
+                };
 
-              case 9:
+                if (!(data instanceof FormData)) {
+                  request.headers = {
+                    'Content-Type': 'application/json'
+                  };
+                }
+
+                _context.next = 11;
+                return fetch(url, request);
+
+              case 11:
                 response = _context.sent;
-                _context.next = 12;
+                _context.next = 14;
                 return response.json();
 
-              case 12:
+              case 14:
                 body = _context.sent;
                 return _context.abrupt("return", {
                   body: body,
                   response: response
                 });
 
-              case 14:
+              case 16:
               case "end":
                 return _context.stop();
             }

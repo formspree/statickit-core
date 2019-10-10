@@ -1,6 +1,11 @@
 import { encode, append } from './util';
 import './polyfills';
 
+const serializeBody = data => {
+  if (data instanceof FormData) return data;
+  JSON.stringify(data);
+};
+
 class StaticKit {
   constructor() {
     this.session = {
@@ -54,12 +59,19 @@ class StaticKit {
 
     append(data, '_t', encode(session));
 
-    const response = await fetch(url, {
+    const request = {
       method: 'POST',
       mode: 'cors',
-      body: JSON.stringify(data)
-    });
+      body: serializeBody(data)
+    };
 
+    if (!(data instanceof FormData)) {
+      request.headers = {
+        'Content-Type': 'application/json'
+      };
+    }
+
+    const response = await fetch(url, request);
     const body = await response.json();
 
     return { body, response };
