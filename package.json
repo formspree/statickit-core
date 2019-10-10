@@ -9,6 +9,9 @@
     "type": "git",
     "url": "https://github.com/unstacked/statickit-core.git"
   },
+  "files": [
+    "dist/*"
+  ],
   "publishConfig": {
     "access": "public"
   },
