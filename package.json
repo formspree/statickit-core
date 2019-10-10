@@ -9,11 +9,15 @@
     "type": "git",
     "url": "https://github.com/unstacked/statickit-core.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/statickit.umd.js",
   "module": "dist/statickit.esm.js",
   "scripts": {
     "build": "rollup -c",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "np"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
@@ -21,6 +25,7 @@
     "@babel/preset-env": "^7.6.0",
     "husky": "^3.0.5",
     "lint-staged": "^9.2.5",
+    "np": "^5.1.1",
     "prettier": "^1.18.2",
     "rollup": "^1.21.4",
     "rollup-plugin-babel": "^4.3.3",
@@ -37,6 +42,9 @@
       "npx prettier --write",
       "git add"
     ]
+  },
+  "np": {
+    "yarn": false
   },
   "dependencies": {
     "@babel/runtime": "^7.6.0"
