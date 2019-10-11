@@ -17,8 +17,8 @@ export default [
     input: 'src/index.js',
     plugins: plugins,
     output: {
-      format: 'umd',
-      file: __dirname + '/dist/statickit.umd.js',
+      format: 'cjs',
+      file: __dirname + '/dist/statickit.cjs.js',
       name: 'StaticKit'
     }
   },

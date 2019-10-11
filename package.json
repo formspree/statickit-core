@@ -9,18 +9,21 @@
     "type": "git",
     "url": "https://github.com/unstacked/statickit-core.git"
   },
+  "module": "dist/statickit.esm.js",
+  "main": "dist/statickit.cjs.js",
   "files": [
-    "dist/*"
+    "dist/statickit.esm.js",
+    "dist/statickit.cjs.js"
   ],
   "publishConfig": {
     "access": "public"
   },
-  "main": "dist/statickit.umd.js",
-  "module": "dist/statickit.esm.js",
   "scripts": {
     "build": "rollup -c",
     "test": "jest",
-    "release": "np"
+    "release": "np",
+    "prepare": "npm run build",
+    "prepublish": "npm run build"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
@@ -41,7 +44,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm run build && git add dist/"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
@@ -52,8 +55,5 @@
   },
   "np": {
     "yarn": false
-  },
-  "dependencies": {
-    "@babel/runtime": "^7.6.0"
   }
 }
