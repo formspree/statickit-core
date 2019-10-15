@@ -22,7 +22,7 @@ describe('submitForm', () => {
 
     const client = StaticKit();
 
-    client
+    return client
       .submitForm({
         id: '000',
         fetchImpl: mockFetch
