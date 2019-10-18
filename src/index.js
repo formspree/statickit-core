@@ -9,6 +9,17 @@ const serializeBody = data => {
   JSON.stringify(data);
 };
 
+const submissionUrl = props => {
+  const { id, site, key } = props;
+  const endpoint = props.endpoint || 'https://api.statickit.com';
+
+  if (site && key) {
+    return `${endpoint}/j/sites/${site}/forms/${key}/submissions`;
+  } else {
+    return `${endpoint}/j/forms/${id}/submissions`;
+  }
+};
+
 /**
  * The client constructor.
  */
@@ -53,13 +64,12 @@ StaticKit.prototype.teardown = function teardown() {
  * @returns {Promise}
  */
 StaticKit.prototype.submitForm = function submitForm(props) {
-  if (!props.id) {
-    throw new Error('You must provide an `id` for the form');
+  if (!props.id && !(props.site && props.key)) {
+    throw new Error('You must set an `id` or `site` & `key` properties');
   }
 
   const fetchImpl = props.fetchImpl || fetchPonyfill({ Promise }).fetch;
-  const endpoint = props.endpoint || 'https://api.statickit.com';
-  const url = `${endpoint}/j/forms/${props.id}/submissions`;
+  const url = submissionUrl(props);
   const data = props.data || {};
   const session = objectAssign({}, this.session, {
     submittedAt: 1 * new Date()
