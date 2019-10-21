@@ -36,7 +36,7 @@ describe('submitForm', () => {
       });
   });
 
-  it('accepts `site` + `key` properties', () => {
+  it('accepts `site` + `form` properties', () => {
     const mockFetch = (url, props) => {
       expect(url).toEqual(
         'https://api.statickit.com/j/sites/000/forms/newsletter/submissions'
@@ -62,7 +62,7 @@ describe('submitForm', () => {
     return client
       .submitForm({
         site: '000',
-        key: 'newsletter',
+        form: 'newsletter',
         fetchImpl: mockFetch
       })
       .then(({ body, response }) => {
@@ -83,7 +83,7 @@ describe('submitForm', () => {
       });
     } catch (e) {
       expect(e.message).toBe(
-        'You must set an `id` or `site` & `key` properties'
+        'You must set an `id` or `site` & `form` properties'
       );
     }
   });

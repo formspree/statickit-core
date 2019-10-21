@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0
+
+- Accept `site` + `form` combo (in lieu of `id`) for identifying forms.
+
 ## 1.3.0
 
 - Fix bugs affecting form data that is not an instance of `FormData`.
