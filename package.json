@@ -3,26 +3,41 @@
   "version": "1.4.0",
   "description": "The core library for StaticKit",
   "homepage": "https://statickit.com",
-  "author": "Derrick Reimer",
-  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/unstacked/statickit-core/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/unstacked/statickit-core.git"
   },
-  "module": "dist/statickit.esm.js",
-  "main": "dist/statickit.cjs.js",
+  "license": "MIT",
+  "author": "Derrick Reimer",
   "files": [
     "dist/statickit.esm.js",
     "dist/statickit.cjs.js"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
+  "main": "dist/statickit.cjs.js",
+  "module": "dist/statickit.esm.js",
   "scripts": {
     "build": "rollup -c",
-    "test": "jest",
+    "prepare": "npm run build",
     "release": "np",
-    "prepare": "npm run build"
+    "test": "jest"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css,json,md}": [
+      "npx prettier --write",
+      "git add"
+    ],
+    "package.json": [
+      "npx sort-package-json",
+      "git add"
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
@@ -39,18 +54,11 @@
     "rollup": "^1.21.4",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0"
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "sort-package-json": "^1.22.1"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,css,json,md}": [
-      "npx prettier --write",
-      "git add"
-    ]
+  "publishConfig": {
+    "access": "public"
   },
   "np": {
     "yarn": false
