@@ -1,7 +1,5 @@
 import StaticKit from '../src';
-import packageJson from '../package.json';
-
-const version = packageJson.version;
+import { version } from '../package.json';
 
 // A fake success result for a mocked `fetch` call.
 //
