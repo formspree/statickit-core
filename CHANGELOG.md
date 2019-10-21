@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.0
+
+- Accept a `clientName` property to set in the `StaticKit-Client` header.
+- Fix bug serializing JSON body payload.
+
 ## 1.4.0
 
 - Accept `site` + `form` combo (in lieu of `id`) for identifying forms.

@@ -3,10 +3,11 @@ import { encode, append } from './util';
 import Promise from 'promise-polyfill';
 import fetchPonyfill from 'fetch-ponyfill';
 import objectAssign from 'object-assign';
+import packageJson from '../package.json';
 
 const serializeBody = data => {
   if (data instanceof FormData) return data;
-  JSON.stringify(data);
+  return JSON.stringify(data);
 };
 
 const submissionUrl = props => {
@@ -18,6 +19,12 @@ const submissionUrl = props => {
   } else {
     return `${endpoint}/j/forms/${id}/submissions`;
   }
+};
+
+const clientHeader = ({ clientName }) => {
+  const label = `@statickit/core@${packageJson.version}`;
+  if (!clientName) return label;
+  return `${clientName} ${label}`;
 };
 
 /**
@@ -80,13 +87,14 @@ StaticKit.prototype.submitForm = function submitForm(props) {
   const request = {
     method: 'POST',
     mode: 'cors',
-    body: serializeBody(data)
+    body: serializeBody(data),
+    headers: {
+      'StaticKit-Client': clientHeader(props)
+    }
   };
 
   if (!(data instanceof FormData)) {
-    request.headers = {
-      'Content-Type': 'application/json'
-    };
+    request.headers['Content-Type'] = 'application/json';
   }
 
   return fetchImpl(url, request).then(response => {
