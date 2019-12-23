@@ -70,10 +70,24 @@ describe('submitForm', () => {
     });
   });
 
+  it('accepts `site` set during initialization', () => {
+    const mockFetch = (url, _props) => {
+      expect(url).toEqual(
+        'https://api.statickit.com/j/sites/111/forms/newsletter/submissions'
+      );
+      return success;
+    };
+
+    return StaticKit({ site: '111' }).submitForm({
+      form: 'newsletter',
+      fetchImpl: mockFetch
+    });
+  });
+
   it('errors out if identifying properties are not set', () => {
     expect(() => {
       StaticKit().submitForm({});
-    }).toThrow('You must set an `id` or `site` & `form` properties');
+    }).toThrow('`site` and `form` properties are required');
   });
 
   it('throws an error if clientName is not given', () => {
