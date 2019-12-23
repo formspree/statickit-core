@@ -3,7 +3,8 @@
     "declaration": true,
     "declarationDir": "dist/types",
     "strict": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

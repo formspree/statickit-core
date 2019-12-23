@@ -1,4 +1,4 @@
-import submitForm, { Props as SubmitFormProps } from './api/submitForm';
+import submitForm, { Props as SubmitFormProps } from './methods/submitForm';
 import { Session } from './session';
 
 interface Config {

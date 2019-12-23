@@ -6,15 +6,21 @@ import { version } from '../../package.json';
 import { Session } from '../session';
 
 export interface Props {
+  id?: string;
   site?: string;
+  form?: string;
+  data?: FormData | object | undefined;
+  endpoint?: string | undefined;
+  clientName?: string;
+  fetchImpl?: typeof fetch | undefined;
 }
 
-const serializeBody = data => {
+const serializeBody = (data: FormData | object): FormData | string => {
   if (data instanceof FormData) return data;
   return JSON.stringify(data);
 };
 
-const submissionUrl = props => {
+const submissionUrl = (props: Props) => {
   const { id, site, form } = props;
   const endpoint = props.endpoint || 'https://api.statickit.com';
 
@@ -25,7 +31,7 @@ const submissionUrl = props => {
   }
 };
 
-const clientHeader = ({ clientName }) => {
+const clientHeader = ({ clientName }: Props) => {
   const label = `@statickit/core@${version}`;
   if (!clientName) return label;
   return `${clientName} ${label}`;
@@ -36,27 +42,30 @@ export default function submitForm(session: Session, props: Props = {}) {
     throw new Error('`site` and `form` properties are required');
   }
 
-  const fetchImpl = props.fetchImpl || fetchPonyfill({ Promise }).fetch;
-  const url = submissionUrl(props);
-  const data = props.data || {};
-  const sessionWithTime = objectAssign({}, session, {
+  let fetchImpl = props.fetchImpl || fetchPonyfill({ Promise }).fetch;
+  let url = submissionUrl(props);
+  let data = props.data || {};
+  let sessionWithTime = objectAssign({}, session, {
+    // @ts-ignore
     submittedAt: 1 * new Date()
   });
 
   append(data, '_t', encode(sessionWithTime));
 
-  const request = {
-    method: 'POST',
-    mode: 'cors',
-    body: serializeBody(data),
-    headers: {
-      'StaticKit-Client': clientHeader(props)
-    }
+  let headers: { [key: string]: string } = {
+    'StaticKit-Client': clientHeader(props)
   };
 
   if (!(data instanceof FormData)) {
-    request.headers['Content-Type'] = 'application/json';
+    headers['Content-Type'] = 'application/json';
   }
+
+  let request = {
+    method: 'POST',
+    mode: 'cors' as const,
+    body: serializeBody(data),
+    headers
+  };
 
   return fetchImpl(url, request).then(response => {
     return response.json().then(body => {
