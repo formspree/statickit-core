@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "outDir": "src",
-    "strict": true
+    "declarationDir": "dist/types",
+    "strict": true,
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

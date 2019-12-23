@@ -3,6 +3,11 @@ import fetchPonyfill from 'fetch-ponyfill';
 import objectAssign from 'object-assign';
 import { encode, append } from '../util';
 import { version } from '../../package.json';
+import { Session } from '../session';
+
+export interface Props {
+  site?: string;
+}
 
 const serializeBody = data => {
   if (data instanceof FormData) return data;
@@ -26,7 +31,7 @@ const clientHeader = ({ clientName }) => {
   return `${clientName} ${label}`;
 };
 
-export default function submitForm(session, props = {}) {
+export default function submitForm(session: Session, props: Props = {}) {
   if (!props.id && !(props.site && props.form)) {
     throw new Error('`site` and `form` properties are required');
   }

@@ -1,23 +1,27 @@
+// @ts-ignore
 import { btoa } from './base64';
 
 /**
  * Base-64 encodes a (JSON-castable) object.
  *
- * @param {object} obj - The object to encode.
- * @returns {string}
+ * @param obj - The object to encode.
  */
-export const encode = obj => {
+export const encode = (obj: object): string => {
   return btoa(JSON.stringify(obj));
 };
 
 /**
  * Appends a key-value pair to a target.
  *
- * @param {object|FormData} target
- * @param {string} key
- * @param {string} value
+ * @param target
+ * @param key
+ * @param value
  */
-export const append = (target, key, value) => {
+export const append = (
+  target: { [key: string]: any } | FormData,
+  key: string,
+  value: string
+) => {
   if (target instanceof FormData) {
     target.append(key, value);
   } else {
