@@ -13,11 +13,11 @@
   "license": "MIT",
   "author": "Derrick Reimer",
   "files": [
-    "dist/statickit.esm.js",
-    "dist/statickit.cjs.js"
+    "dist/**/*.{js,ts}"
   ],
   "main": "dist/statickit.cjs.js",
   "module": "dist/statickit.esm.js",
+  "types": "dist/types/src/index.d.ts",
   "scripts": {
     "build": "npm run build:types && npm run build:js",
     "build:js": "rollup -c",
