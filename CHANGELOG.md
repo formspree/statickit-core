@@ -1,5 +1,10 @@
 # Changelog
 
+## Next
+
+- Migrate to TypeScript
+- Accept `site` config when instantiating the client
+
 ## 1.5.0
 
 - Accept a `clientName` property to set in the `StaticKit-Client` header.
