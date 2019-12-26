@@ -1,4 +1,4 @@
-import StaticKit from '../src';
+import { createClient } from '../src';
 import { version } from '../package.json';
 
 // A fake success result for a mocked `fetch` call.
@@ -29,7 +29,7 @@ describe('submitForm', () => {
       return success;
     };
 
-    return StaticKit()
+    return createClient()
       .submitForm({
         id: '000',
         fetchImpl: mockFetch
@@ -49,7 +49,7 @@ describe('submitForm', () => {
       return success;
     };
 
-    return StaticKit().submitForm({
+    return createClient().submitForm({
       id: '000',
       fetchImpl: mockFetch
     });
@@ -63,7 +63,7 @@ describe('submitForm', () => {
       return success;
     };
 
-    return StaticKit().submitForm({
+    return createClient().submitForm({
       site: '000',
       form: 'newsletter',
       fetchImpl: mockFetch
@@ -78,7 +78,7 @@ describe('submitForm', () => {
       return success;
     };
 
-    return StaticKit({ site: '111' }).submitForm({
+    return createClient({ site: '111' }).submitForm({
       form: 'newsletter',
       fetchImpl: mockFetch
     });
@@ -86,7 +86,7 @@ describe('submitForm', () => {
 
   it('errors out if identifying properties are not set', () => {
     expect(() => {
-      StaticKit().submitForm({});
+      createClient().submitForm({});
     }).toThrow('`site` and `form` properties are required');
   });
 
@@ -99,7 +99,7 @@ describe('submitForm', () => {
       return success;
     };
 
-    return StaticKit().submitForm({
+    return createClient().submitForm({
       id: '000',
       fetchImpl: mockFetch
     });
@@ -114,7 +114,7 @@ describe('submitForm', () => {
       return success;
     };
 
-    return StaticKit().submitForm({
+    return createClient().submitForm({
       id: '000',
       clientName: 'my-client',
       fetchImpl: mockFetch
@@ -130,7 +130,7 @@ describe('submitForm', () => {
       return success;
     };
 
-    return StaticKit().submitForm({
+    return createClient().submitForm({
       id: '000',
       fetchImpl: mockFetch,
       data: { foo: 'bar' }

@@ -1,11 +1,11 @@
 import submitForm, { Props as SubmitFormProps } from './methods/submitForm';
 import { Session } from './session';
 
-interface Config {
+export interface Config {
   site?: string;
 }
 
-class StaticKit {
+export class StaticKit {
   site: string | undefined;
   private _session: Session;
   private _onMouseMove: () => void;
@@ -54,6 +54,6 @@ class StaticKit {
 /**
  * Constructs the client object.
  */
-export default (props?: Config): StaticKit => {
+export const createClient = (props?: Config): StaticKit => {
   return new StaticKit(props || {});
 };
