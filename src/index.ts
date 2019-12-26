@@ -1,4 +1,8 @@
-import submitForm, { Props as SubmitFormProps } from './methods/submitForm';
+import submitForm, {
+  Props as SubmitFormProps,
+  Result as SubmitFormResult
+} from './methods/submitForm';
+
 import { Session } from './session';
 
 export interface Config {
@@ -45,7 +49,7 @@ export class StaticKit {
     window.removeEventListener('keydown', this._onKeyDown);
   }
 
-  submitForm(props: SubmitFormProps = {}): any {
+  submitForm(props: SubmitFormProps = {}): Promise<SubmitFormResult> {
     props.site || (props.site = this.site);
     return submitForm(this._session, props);
   }

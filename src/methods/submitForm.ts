@@ -15,6 +15,23 @@ export interface Props {
   fetchImpl?: typeof fetch | undefined;
 }
 
+interface SuccessResponse {
+  id: string;
+  data: object;
+}
+
+interface ErrorResponse {
+  errors: Array<{
+    field: string;
+    message: string;
+    code: string | null;
+    properties: object;
+  }>;
+}
+
+type ResponseBody = SuccessResponse | ErrorResponse;
+export type Result = { body: ResponseBody; response: Response };
+
 const serializeBody = (data: FormData | object): FormData | string => {
   if (data instanceof FormData) return data;
   return JSON.stringify(data);
@@ -37,7 +54,10 @@ const clientHeader = ({ clientName }: Props) => {
   return `${clientName} ${label}`;
 };
 
-export default function submitForm(session: Session, props: Props = {}) {
+export default function submitForm(
+  session: Session,
+  props: Props = {}
+): Promise<Result> {
   if (!props.id && !(props.site && props.form)) {
     throw new Error('`site` and `form` properties are required');
   }
