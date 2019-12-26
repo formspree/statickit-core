@@ -88,7 +88,10 @@ export default function submitForm(
   };
 
   return fetchImpl(url, request).then(response => {
-    return response.json().then((body: ResponseBody) => {
+    return response.json().then((body: ResponseBody): {
+      body: ResponseBody;
+      response: Response;
+    } => {
       return { body, response };
     });
   });
