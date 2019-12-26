@@ -1,9 +1,10 @@
 # Changelog
 
-## Next
+## 2.0.0
 
 - Migrate to TypeScript
 - Accept `site` config when instantiating the client
+- Export a `createClient` function (instead of a default value)
 
 ## 1.5.0
 
