@@ -15,7 +15,7 @@ describe('invoke', () => {
           status: 200,
           json: () => {
             return new Promise(resolve => {
-              resolve({ id: 'xxx' });
+              resolve({ ok: true, body: {} });
             });
           }
         };
@@ -26,16 +26,9 @@ describe('invoke', () => {
     const client = createClient({ site: 'xxxx' });
 
     return client
-      .invoke(
-        'myFunction',
-        { foo: 'bar' },
-        {
-          fetchImpl: mockFetch
-        }
-      )
-      .then(({ body, response }) => {
-        expect(body.id).toEqual('xxx');
-        expect(response.status).toEqual(200);
+      .invoke('myFunction', { foo: 'bar' }, { fetchImpl: mockFetch })
+      .then(resp => {
+        expect(resp.ok).toEqual(true);
       })
       .catch(e => {
         throw e;

@@ -9,10 +9,32 @@ export interface Options {
   fetchImpl?: typeof fetch;
 }
 
-export type Result = {
+type Success = {
+  ok: true;
   body: object;
   response: Response;
 };
+
+type ValidationError = {
+  ok: false;
+  reason: 'args' | 'config';
+  errors: Array<{
+    field: string;
+    message: string;
+    code: string | null;
+    properties: object;
+  }>;
+};
+
+type RuntimeError = {
+  ok: false;
+  reason: 'runtime';
+  error: {
+    message: string;
+  };
+};
+
+export type Result = Success | ValidationError | RuntimeError;
 
 const clientHeader = ({ clientName }: Options) => {
   const label = `@statickit/core@${version}`;
@@ -20,7 +42,11 @@ const clientHeader = ({ clientName }: Options) => {
   return `${clientName} ${label}`;
 };
 
-export default function invoke(name: string, args: object, options: Options) {
+export default function invoke(
+  name: string,
+  args: object,
+  options: Options
+): Promise<Result> {
   let endpoint = options.endpoint || 'https://api.statickit.com';
   let fetchImpl = options.fetchImpl || fetchPonyfill({ Promise }).fetch;
   let site = options.site;
@@ -40,8 +66,8 @@ export default function invoke(name: string, args: object, options: Options) {
 
   return fetchImpl(url, request).then(response => {
     return response.json().then(
-      (body: object): Result => {
-        return { body, response };
+      (body: Result): Result => {
+        return body;
       }
     );
   });
