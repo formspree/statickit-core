@@ -30,15 +30,30 @@ export class StaticKit {
     this.session = new Session();
   }
 
+  /**
+   * Teardown the client session.
+   */
   teardown(): void {
     this.session.teardown();
   }
 
+  /**
+   * Submit a form.
+   *
+   * @param props
+   */
   submitForm(props: SubmitFormProps): Promise<SubmitFormResult> {
     props.site || (props.site = this.site);
     return submitForm(this.session, props);
   }
 
+  /**
+   * Invoke a function.
+   *
+   * @param name
+   * @param args
+   * @param opts
+   */
   invoke(name: string, args: object, opts: Options): Promise<InvokeResult> {
     opts.site || (opts.site = this.site);
     if (!opts.site) throw new Error('`site` is required');
