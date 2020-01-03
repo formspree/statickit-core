@@ -27,7 +27,8 @@ export default function invoke(name: string, args: object, options: Options) {
   let url = `${endpoint}/j/sites/${site}/functions/${name}/invoke`;
 
   let headers: { [key: string]: string } = {
-    'StaticKit-Client': clientHeader(options)
+    'StaticKit-Client': clientHeader(options),
+    'Content-Type': 'application/json'
   };
 
   let request = {
