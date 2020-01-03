@@ -3,41 +3,62 @@ import submitForm, {
   Result as SubmitFormResult
 } from './methods/submitForm';
 
+import invoke, {
+  Options as InvokeOptions,
+  Result as InvokeResult
+} from './methods/invoke';
+
 import { Session } from './session';
+
+export interface Options {
+  site?: string;
+  endpoint?: string;
+  clientName?: string;
+  fetchImpl?: typeof fetch;
+}
 
 export interface Config {
   site?: string;
 }
 
+const webdriver = (): boolean => {
+  return (
+    navigator.webdriver ||
+    !!document.documentElement.getAttribute('webdriver') ||
+    // @ts-ignore
+    !!window.callPhantom ||
+    // @ts-ignore
+    !!window._phantom
+  );
+};
+
+const now = (): number => {
+  // @ts-ignore
+  return 1 * new Date();
+};
+
 export class StaticKit {
   site: string | undefined;
-  private _session: Session;
+  private session: Session;
   private _onMouseMove: () => void;
   private _onKeyDown: () => void;
 
-  constructor(props: Config) {
-    this.site = props.site;
+  constructor(config: Config) {
+    this.site = config.site;
 
-    this._session = {
-      // @ts-ignore
-      loadedAt: 1 * new Date(),
+    this.session = {
       mousemove: 0,
       keydown: 0,
-      webdriver:
-        navigator.webdriver ||
-        !!document.documentElement.getAttribute('webdriver') ||
-        // @ts-ignore
-        !!window.callPhantom ||
-        // @ts-ignore
-        !!window._phantom
+      loadedAt: now(),
+      webdriver: webdriver()
     };
 
     this._onMouseMove = () => {
-      this._session.mousemove += 1;
+      this.session.mousemove += 1;
     };
 
     this._onKeyDown = () => {
-      this._session.keydown += 1;
+      this.session.keydown += 1;
     };
 
     window.addEventListener('mousemove', this._onMouseMove);
@@ -49,15 +70,21 @@ export class StaticKit {
     window.removeEventListener('keydown', this._onKeyDown);
   }
 
-  submitForm(props: SubmitFormProps = {}): Promise<SubmitFormResult> {
+  submitForm(props: SubmitFormProps): Promise<SubmitFormResult> {
     props.site || (props.site = this.site);
-    return submitForm(this._session, props);
+    return submitForm(this.session, props);
+  }
+
+  invoke(name: string, args: object, opts: Options): Promise<InvokeResult> {
+    opts.site || (opts.site = this.site);
+    if (!opts.site) throw new Error('`site` is required');
+    return invoke(name, args, opts as InvokeOptions);
   }
 }
 
 /**
  * Constructs the client object.
  */
-export const createClient = (props?: Config): StaticKit => {
-  return new StaticKit(props || {});
+export const createClient = (config?: Config): StaticKit => {
+  return new StaticKit(config || {});
 };

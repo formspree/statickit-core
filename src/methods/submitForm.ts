@@ -9,7 +9,7 @@ export interface Props {
   id?: string;
   site?: string;
   form?: string;
-  data?: FormData | object | undefined;
+  data: FormData | object;
   endpoint?: string | undefined;
   clientName?: string;
   fetchImpl?: typeof fetch | undefined;
@@ -56,7 +56,7 @@ const clientHeader = ({ clientName }: Props) => {
 
 export default function submitForm(
   session: Session,
-  props: Props = {}
+  props: Props
 ): Promise<Result> {
   if (!props.id && !(props.site && props.form)) {
     throw new Error('`site` and `form` properties are required');
