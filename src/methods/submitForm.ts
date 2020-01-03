@@ -32,6 +32,11 @@ interface ErrorResponse {
 type ResponseBody = SuccessResponse | ErrorResponse;
 export type Result = { body: ResponseBody; response: Response };
 
+const now = (): number => {
+  // @ts-ignore
+  return 1 * new Date();
+};
+
 const serializeBody = (data: FormData | object): FormData | string => {
   if (data instanceof FormData) return data;
   return JSON.stringify(data);
@@ -65,9 +70,8 @@ export default function submitForm(
   let fetchImpl = props.fetchImpl || fetchPonyfill({ Promise }).fetch;
   let url = submissionUrl(props);
   let data = props.data || {};
-  let sessionWithTime = objectAssign({}, session, {
-    // @ts-ignore
-    submittedAt: 1 * new Date()
+  let sessionWithTime = objectAssign({}, session.data(), {
+    submittedAt: now()
   });
 
   append(data, '_t', encode(sessionWithTime));

@@ -21,53 +21,17 @@ export interface Config {
   site?: string;
 }
 
-const webdriver = (): boolean => {
-  return (
-    navigator.webdriver ||
-    !!document.documentElement.getAttribute('webdriver') ||
-    // @ts-ignore
-    !!window.callPhantom ||
-    // @ts-ignore
-    !!window._phantom
-  );
-};
-
-const now = (): number => {
-  // @ts-ignore
-  return 1 * new Date();
-};
-
 export class StaticKit {
   site: string | undefined;
   private session: Session;
-  private _onMouseMove: () => void;
-  private _onKeyDown: () => void;
 
   constructor(config: Config) {
     this.site = config.site;
-
-    this.session = {
-      mousemove: 0,
-      keydown: 0,
-      loadedAt: now(),
-      webdriver: webdriver()
-    };
-
-    this._onMouseMove = () => {
-      this.session.mousemove += 1;
-    };
-
-    this._onKeyDown = () => {
-      this.session.keydown += 1;
-    };
-
-    window.addEventListener('mousemove', this._onMouseMove);
-    window.addEventListener('keydown', this._onKeyDown);
+    this.session = new Session();
   }
 
   teardown(): void {
-    window.removeEventListener('mousemove', this._onMouseMove);
-    window.removeEventListener('keydown', this._onKeyDown);
+    this.session.teardown();
   }
 
   submitForm(props: SubmitFormProps): Promise<SubmitFormResult> {
