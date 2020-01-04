@@ -15,7 +15,7 @@ describe('invoke', () => {
           status: 200,
           json: () => {
             return new Promise(resolve => {
-              resolve({ ok: true, body: {} });
+              resolve({ ok: true, id: 123 });
             });
           }
         };
@@ -29,6 +29,7 @@ describe('invoke', () => {
       .invoke('myFunction', { foo: 'bar' }, { fetchImpl: mockFetch })
       .then(resp => {
         expect(resp.ok).toEqual(true);
+        expect(resp.id).toEqual(123);
       })
       .catch(e => {
         throw e;

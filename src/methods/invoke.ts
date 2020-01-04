@@ -11,8 +11,6 @@ export interface Options {
 
 type Success = {
   ok: true;
-  body: object;
-  response: Response;
 };
 
 type ValidationError = {
