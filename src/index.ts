@@ -42,7 +42,7 @@ export class StaticKit {
   /**
    * Submit a form.
    *
-   * @param props - Form submission properties
+   * @param props - Form submission properties.
    */
   submitForm(props: SubmissionProps): Promise<SubmissionResult> {
     props.site || (props.site = this.site);
@@ -52,9 +52,9 @@ export class StaticKit {
   /**
    * Invoke a function.
    *
-   * @param name - The function name
-   * @param args - An object of function arguments
-   * @param opts - An object of options
+   * @param name - The function name.
+   * @param args - An object of function arguments.
+   * @param opts - An object of options.
    */
   invoke(
     name: string,

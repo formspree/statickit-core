@@ -19,7 +19,7 @@
   "module": "dist/statickit.esm.js",
   "types": "dist/types/src/index.d.ts",
   "scripts": {
-    "build": "npm run build:types && npm run build:js",
+    "build": "rm -rf dist && npm run build:types && npm run build:js",
     "build:js": "rollup -c",
     "build:types": "tsc --emitDeclarationOnly",
     "format": "npx prettier --write 'src/**/*.{js,ts}'",
