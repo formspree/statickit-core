@@ -1,5 +1,6 @@
 import Promise from 'promise-polyfill';
 import fetchPonyfill from 'fetch-ponyfill';
+import { camelizeTopKeys } from '../util';
 import { version } from '../../package.json';
 
 export interface Options {
@@ -9,11 +10,15 @@ export interface Options {
   fetchImpl?: typeof fetch;
 }
 
-type Success = {
+type ResponseBody = {
+  [key: string]: any;
+};
+
+type Success = ResponseBody & {
   ok: true;
 };
 
-type ValidationError = {
+type ValidationError = ResponseBody & {
   ok: false;
   reason: 'args' | 'config';
   errors: Array<{
@@ -24,7 +29,7 @@ type ValidationError = {
   }>;
 };
 
-type RuntimeError = {
+type RuntimeError = ResponseBody & {
   ok: false;
   reason: 'runtime';
   error: {
@@ -65,7 +70,7 @@ export default function invoke(
   return fetchImpl(url, request).then(response => {
     return response.json().then(
       (body: Result): Result => {
-        return body;
+        return camelizeTopKeys(body) as Result;
       }
     );
   });

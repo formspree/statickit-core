@@ -1,4 +1,4 @@
-import { toCamel } from '../src/util';
+import { toCamel, camelizeTopKeys } from '../src/util';
 
 describe('toCamel', () => {
   it('converts snake case to camel', () => {
@@ -11,5 +11,15 @@ describe('toCamel', () => {
 
   it('does not change camel case', () => {
     expect(toCamel('firstName')).toBe('firstName');
+  });
+});
+
+describe('camelizeTopKeys', () => {
+  it('converts top-level keys to camel case', () => {
+    expect(
+      camelizeTopKeys({ first_name: { first_letter: 'B' } })
+    ).toStrictEqual({
+      firstName: { first_letter: 'B' }
+    });
   });
 });

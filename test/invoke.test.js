@@ -36,6 +36,33 @@ describe('invoke', () => {
       });
   });
 
+  it('camelizes the response', () => {
+    const mockFetch = (url, props) => {
+      return new Promise((resolve, _reject) => {
+        const response = {
+          status: 200,
+          json: () => {
+            return new Promise(resolve => {
+              resolve({ ok: true, payment_intent: 'pi_XXX' });
+            });
+          }
+        };
+        resolve(response);
+      });
+    };
+
+    const client = createClient({ site: 'xxxx' });
+
+    return client
+      .invoke('myFunction', {}, { fetchImpl: mockFetch })
+      .then(resp => {
+        expect(resp.paymentIntent).toEqual('pi_XXX');
+      })
+      .catch(e => {
+        throw e;
+      });
+  });
+
   it('errors out if identifying properties are not set', () => {
     expect(() => {
       createClient().invoke('myFunction', {}, {});
