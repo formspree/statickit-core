@@ -1,16 +1,18 @@
-import submitForm, {
-  Props as SubmitFormProps,
-  Result as SubmitFormResult
-} from './methods/submitForm';
-
-import invoke, {
-  Options as InvokeOptions,
-  Result as InvokeResult
-} from './methods/invoke';
-
+import submitForm, { Result as SubmissionResult } from './methods/submitForm';
+import invoke, { Result as InvokeResult } from './methods/invoke';
 import { Session } from './session';
 
-export interface Options {
+export interface SubmissionProps {
+  id?: string;
+  site?: string;
+  form?: string;
+  data: FormData | object;
+  endpoint?: string;
+  clientName?: string;
+  fetchImpl?: typeof fetch;
+}
+
+export interface InvokeOptions {
   site?: string;
   endpoint?: string;
   clientName?: string;
@@ -42,7 +44,7 @@ export class StaticKit {
    *
    * @param props - Form submission properties
    */
-  submitForm(props: SubmitFormProps): Promise<SubmitFormResult> {
+  submitForm(props: SubmissionProps): Promise<SubmissionResult> {
     props.site || (props.site = this.site);
     return submitForm(this.session, props);
   }
@@ -54,10 +56,13 @@ export class StaticKit {
    * @param args - An object of function arguments
    * @param opts - An object of options
    */
-  invoke(name: string, args: object, opts: Options): Promise<InvokeResult> {
+  invoke(
+    name: string,
+    args: object,
+    opts: InvokeOptions
+  ): Promise<InvokeResult> {
     opts.site || (opts.site = this.site);
-    if (!opts.site) throw new Error('`site` is required');
-    return invoke(name, args, opts as InvokeOptions);
+    return invoke(name, args, opts);
   }
 }
 

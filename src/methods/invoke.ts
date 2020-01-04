@@ -4,7 +4,7 @@ import { camelizeTopKeys } from '../util';
 import { version } from '../../package.json';
 
 export interface Options {
-  site: string;
+  site?: string;
   endpoint?: string;
   clientName?: string;
   fetchImpl?: typeof fetch;
@@ -50,6 +50,8 @@ export default function invoke(
   args: object,
   options: Options
 ): Promise<Result> {
+  if (!options.site) throw new Error('`site` is required');
+
   let endpoint = options.endpoint || 'https://api.statickit.com';
   let fetchImpl = options.fetchImpl || fetchPonyfill({ Promise }).fetch;
   let site = options.site;

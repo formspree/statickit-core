@@ -10,9 +10,9 @@ export interface Props {
   site?: string;
   form?: string;
   data: FormData | object;
-  endpoint?: string | undefined;
+  endpoint?: string;
   clientName?: string;
-  fetchImpl?: typeof fetch | undefined;
+  fetchImpl?: typeof fetch;
 }
 
 interface SuccessResponse {
