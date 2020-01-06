@@ -15,11 +15,11 @@ type ResponseBody = {
   [key: string]: any;
 };
 
-type Success = ResponseBody & {
+type GenericSuccess = ResponseBody & {
   status: 'ok';
 };
 
-export type Result = Success | Failure;
+export type GenericResponse = GenericSuccess | Failure;
 
 const clientHeader = ({ clientName }: Options) => {
   const label = `@statickit/core@${version}`;
@@ -31,7 +31,7 @@ export default function invoke(
   name: string,
   args: object,
   options: Options
-): Promise<Result> {
+): Promise<GenericResponse> {
   if (!options.site) throw new Error('`site` is required');
 
   let endpoint = options.endpoint || 'https://api.statickit.com';
@@ -53,8 +53,8 @@ export default function invoke(
 
   return fetchImpl(url, request).then(response => {
     return response.json().then(
-      (body: Result): Result => {
-        return camelizeTopKeys(body) as Result;
+      (body: GenericResponse): GenericResponse => {
+        return camelizeTopKeys(body) as GenericResponse;
       }
     );
   });
