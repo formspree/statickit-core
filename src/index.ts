@@ -44,7 +44,7 @@ export class StaticKit {
   invoke(
     name: string,
     args: GenericArgs,
-    opts: FunctionOptions
+    opts: FunctionOptions = {}
   ): Promise<GenericResponse> {
     opts.site || (opts.site = this.site);
     return invoke(name, args, opts);
