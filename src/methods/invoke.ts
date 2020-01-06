@@ -1,7 +1,7 @@
 import Promise from 'promise-polyfill';
 import fetchPonyfill from 'fetch-ponyfill';
 import { camelizeTopKeys } from '../util';
-import { ArgsErrors, ConfigErrors, RuntimeError } from '../functions';
+import { Failure } from '../functions';
 import { version } from '../../package.json';
 
 export interface Options {
@@ -16,10 +16,10 @@ type ResponseBody = {
 };
 
 type Success = ResponseBody & {
-  ok: true;
+  status: 'ok';
 };
 
-export type Result = Success | ArgsErrors | ConfigErrors | RuntimeError;
+export type Result = Success | Failure;
 
 const clientHeader = ({ clientName }: Options) => {
   const label = `@statickit/core@${version}`;

@@ -1,45 +1,40 @@
-export type ArgsErrors = {
-  ok: false;
-  reason: 'argsErrors';
+export interface InvalidArgs {
+  status: 'invalidArgs';
   errors: Array<{
     field: string;
     message: string;
     code: string | null;
     properties: object;
   }>;
-};
+}
 
-export type ConfigErrors = {
-  ok: false;
-  reason: 'configErrors';
+export interface InvalidConfig {
+  status: 'invalidConfig';
   errors: Array<{
     field: string;
     message: string;
     code: string | null;
     properties: object;
   }>;
-};
+}
 
-export type RuntimeError = {
-  ok: false;
-  reason: 'runtimeError';
-  error: {
-    message: string;
-  };
-};
+export interface RuntimeError {
+  status: 'runtimeError';
+  message: string;
+}
 
-export type Error = ArgsErrors | ConfigErrors | RuntimeError;
+export type Failure = InvalidArgs | InvalidConfig | RuntimeError;
 
 export namespace SendNotification {
-  export type Args = {
+  export interface Args {
     subject: string;
     replyTo?: string;
     fields?: object;
-  };
+  }
 
-  export type Success = {
-    ok: true;
-  };
+  export interface Success {
+    status: 'ok';
+  }
 
-  export type Response = Success | Error;
+  export type Response = Success | Failure;
 }
