@@ -1,23 +1,8 @@
-import submitForm, { Result as SubmissionResult } from './methods/submitForm';
-import invoke, { Result as InvokeResult } from './methods/invoke';
+import submitForm from './methods/submitForm';
+import invoke from './methods/invoke';
+import { GenericArgs, GenericResponse, FunctionOptions } from './functions';
+import { SubmissionProps, SubmissionResult } from './forms';
 import { Session } from './session';
-
-export interface SubmissionProps {
-  id?: string;
-  site?: string;
-  form?: string;
-  data: FormData | object;
-  endpoint?: string;
-  clientName?: string;
-  fetchImpl?: typeof fetch;
-}
-
-export interface InvokeOptions {
-  site?: string;
-  endpoint?: string;
-  clientName?: string;
-  fetchImpl?: typeof fetch;
-}
 
 export interface Config {
   site?: string;
@@ -58,9 +43,9 @@ export class StaticKit {
    */
   invoke(
     name: string,
-    args: object,
-    opts: InvokeOptions
-  ): Promise<InvokeResult> {
+    args: GenericArgs,
+    opts: FunctionOptions
+  ): Promise<GenericResponse> {
     opts.site || (opts.site = this.site);
     return invoke(name, args, opts);
   }

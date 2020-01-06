@@ -1,27 +1,10 @@
 import Promise from 'promise-polyfill';
 import fetchPonyfill from 'fetch-ponyfill';
 import { camelizeTopKeys } from '../util';
-import { Failure } from '../functions';
+import { GenericResponse, FunctionOptions } from '../functions';
 import { version } from '../../package.json';
 
-export interface Options {
-  site?: string;
-  endpoint?: string;
-  clientName?: string;
-  fetchImpl?: typeof fetch;
-}
-
-type ResponseBody = {
-  [key: string]: any;
-};
-
-type GenericSuccess = ResponseBody & {
-  status: 'ok';
-};
-
-export type GenericResponse = GenericSuccess | Failure;
-
-const clientHeader = ({ clientName }: Options) => {
+const clientHeader = ({ clientName }: FunctionOptions) => {
   const label = `@statickit/core@${version}`;
   if (!clientName) return label;
   return `${clientName} ${label}`;
@@ -30,7 +13,7 @@ const clientHeader = ({ clientName }: Options) => {
 export default function invoke(
   name: string,
   args: object,
-  options: Options
+  options: FunctionOptions
 ): Promise<GenericResponse> {
   if (!options.site) throw new Error('`site` is required');
 

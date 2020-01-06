@@ -1,36 +1,10 @@
 import Promise from 'promise-polyfill';
 import fetchPonyfill from 'fetch-ponyfill';
 import objectAssign from 'object-assign';
+import { SubmissionProps, SubmissionBody, SubmissionResult } from '../forms';
 import { encode, append } from '../util';
 import { version } from '../../package.json';
 import { Session } from '../session';
-
-export interface Props {
-  id?: string;
-  site?: string;
-  form?: string;
-  data: FormData | object;
-  endpoint?: string;
-  clientName?: string;
-  fetchImpl?: typeof fetch;
-}
-
-interface SuccessResponse {
-  id: string;
-  data: object;
-}
-
-interface ErrorResponse {
-  errors: Array<{
-    field: string;
-    message: string;
-    code: string | null;
-    properties: object;
-  }>;
-}
-
-type ResponseBody = SuccessResponse | ErrorResponse;
-export type Result = { body: ResponseBody; response: Response };
 
 const now = (): number => {
   // @ts-ignore
@@ -42,7 +16,7 @@ const serializeBody = (data: FormData | object): FormData | string => {
   return JSON.stringify(data);
 };
 
-const submissionUrl = (props: Props) => {
+const submissionUrl = (props: SubmissionProps) => {
   const { id, site, form } = props;
   const endpoint = props.endpoint || 'https://api.statickit.com';
 
@@ -53,7 +27,7 @@ const submissionUrl = (props: Props) => {
   }
 };
 
-const clientHeader = ({ clientName }: Props) => {
+const clientHeader = ({ clientName }: SubmissionProps) => {
   const label = `@statickit/core@${version}`;
   if (!clientName) return label;
   return `${clientName} ${label}`;
@@ -61,8 +35,8 @@ const clientHeader = ({ clientName }: Props) => {
 
 export default function submitForm(
   session: Session,
-  props: Props
-): Promise<Result> {
+  props: SubmissionProps
+): Promise<SubmissionResult> {
   if (!props.id && !(props.site && props.form)) {
     throw new Error('`site` and `form` properties are required');
   }
@@ -92,11 +66,10 @@ export default function submitForm(
   };
 
   return fetchImpl(url, request).then(response => {
-    return response.json().then((body: ResponseBody): {
-      body: ResponseBody;
-      response: Response;
-    } => {
-      return { body, response };
-    });
+    return response.json().then(
+      (body: SubmissionBody): SubmissionResult => {
+        return { body, response };
+      }
+    );
   });
 }
