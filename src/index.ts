@@ -1,7 +1,7 @@
 import submitForm from './methods/submitForm';
 import invoke from './methods/invoke';
 import { GenericArgs, GenericResponse, FunctionOptions } from './functions';
-import { SubmissionProps, SubmissionResult } from './forms';
+import { SubmissionArgs, SubmissionResult } from './forms';
 import { Session } from './session';
 
 export interface Config {
@@ -27,11 +27,11 @@ export class StaticKit {
   /**
    * Submit a form.
    *
-   * @param props - Form submission properties.
+   * @param args - An object of form submission data.
    */
-  submitForm(props: SubmissionProps): Promise<SubmissionResult> {
-    props.site || (props.site = this.site);
-    return submitForm(this.session, props);
+  submitForm(args: SubmissionArgs): Promise<SubmissionResult> {
+    args.site || (args.site = this.site);
+    return submitForm(this.session, args);
   }
 
   /**

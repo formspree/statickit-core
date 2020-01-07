@@ -1,4 +1,4 @@
-export interface SubmissionProps {
+export interface SubmissionArgs {
   id?: string;
   site?: string;
   form?: string;
