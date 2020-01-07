@@ -1,9 +1,8 @@
 import Promise from 'promise-polyfill';
 import fetchPonyfill from 'fetch-ponyfill';
 import objectAssign from 'object-assign';
-import { SubmissionArgs, SubmissionBody, SubmissionResult } from '../forms';
-import { encode, append } from '../util';
-import { version } from '../../package.json';
+import { SubmissionOptions, SubmissionBody, SubmissionResult } from '../forms';
+import { encode, append, clientHeader } from '../util';
 import { Session } from '../session';
 
 const now = (): number => {
@@ -16,34 +15,17 @@ const serializeBody = (data: FormData | object): FormData | string => {
   return JSON.stringify(data);
 };
 
-const submissionUrl = (args: SubmissionArgs) => {
-  const { id, site, form } = args;
-  const endpoint = args.endpoint || 'https://api.statickit.com';
-
-  if (site && form) {
-    return `${endpoint}/j/sites/${site}/forms/${form}/submissions`;
-  } else {
-    return `${endpoint}/j/forms/${id}/submissions`;
-  }
-};
-
-const clientHeader = ({ clientName }: SubmissionArgs) => {
-  const label = `@statickit/core@${version}`;
-  if (!clientName) return label;
-  return `${clientName} ${label}`;
-};
-
 export default function submitForm(
+  site: string,
   session: Session,
-  args: SubmissionArgs
+  key: string,
+  data: FormData | object,
+  opts: SubmissionOptions = {}
 ): Promise<SubmissionResult> {
-  if (!args.id && !(args.site && args.form)) {
-    throw new Error('`site` and `form` properties are required');
-  }
+  let endpoint = opts.endpoint || 'https://api.statickit.com';
+  let fetchImpl = opts.fetchImpl || fetchPonyfill({ Promise }).fetch;
+  let url = `${endpoint}/j/sites/${site}/forms/${key}/submissions`;
 
-  let fetchImpl = args.fetchImpl || fetchPonyfill({ Promise }).fetch;
-  let url = submissionUrl(args);
-  let data = args.data || {};
   let sessionWithTime = objectAssign({}, session.data(), {
     submittedAt: now()
   });
@@ -51,7 +33,7 @@ export default function submitForm(
   append(data, '_t', encode(sessionWithTime));
 
   let headers: { [key: string]: string } = {
-    'StaticKit-Client': clientHeader(args)
+    'StaticKit-Client': clientHeader(opts.clientName)
   };
 
   if (!(data instanceof FormData)) {

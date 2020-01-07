@@ -62,10 +62,4 @@ describe('invoke', () => {
         throw e;
       });
   });
-
-  it('errors out if identifying properties are not set', () => {
-    expect(() => {
-      createClient().invoke('myFunction', {}, {});
-    }).toThrow('`site` is required');
-  });
 });

@@ -1,8 +1,4 @@
-export interface SubmissionArgs {
-  id?: string;
-  site?: string;
-  form?: string;
-  data: FormData | object;
+export interface SubmissionOptions {
   endpoint?: string;
   clientName?: string;
   fetchImpl?: typeof fetch;

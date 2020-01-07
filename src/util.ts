@@ -1,5 +1,6 @@
 // @ts-ignore
 import { btoa } from './base64';
+import { version } from '../package.json';
 
 /**
  * Base-64 encodes a (JSON-castable) object.
@@ -59,4 +60,15 @@ export const camelizeTopKeys = (obj: {
   }
 
   return newObject;
+};
+
+/**
+ * Generates a client header.
+ *
+ * @param givenLabel
+ */
+export const clientHeader = (givenLabel: string | undefined): string => {
+  const label = `@statickit/core@${version}`;
+  if (!givenLabel) return label;
+  return `${givenLabel} ${label}`;
 };

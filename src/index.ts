@@ -1,15 +1,15 @@
 import submitForm from './methods/submitForm';
 import invoke from './methods/invoke';
 import { GenericArgs, GenericResponse, FunctionOptions } from './functions';
-import { SubmissionArgs, SubmissionResult } from './forms';
+import { SubmissionOptions, SubmissionResult } from './forms';
 import { Session } from './session';
 
 export interface Config {
-  site?: string;
+  site: string;
 }
 
 export class StaticKit {
-  site: string | undefined;
+  site: string;
   private session: Session;
 
   constructor(config: Config) {
@@ -27,11 +27,16 @@ export class StaticKit {
   /**
    * Submit a form.
    *
+   * @param key - The form key.
+   * @param data - An object or FormData instance containing submission data.
    * @param args - An object of form submission data.
    */
-  submitForm(args: SubmissionArgs): Promise<SubmissionResult> {
-    args.site || (args.site = this.site);
-    return submitForm(this.session, args);
+  submitForm(
+    key: string,
+    data: FormData | object,
+    opts: SubmissionOptions = {}
+  ): Promise<SubmissionResult> {
+    return submitForm(this.site, this.session, key, data, opts);
   }
 
   /**
@@ -46,14 +51,13 @@ export class StaticKit {
     args: GenericArgs,
     opts: FunctionOptions = {}
   ): Promise<GenericResponse> {
-    opts.site || (opts.site = this.site);
-    return invoke(name, args, opts);
+    return invoke(this.site, name, args, opts);
   }
 }
 
 /**
  * Constructs the client object.
  */
-export const createClient = (config?: Config): StaticKit => {
-  return new StaticKit(config || {});
+export const createClient = (config: Config): StaticKit => {
+  return new StaticKit(config);
 };

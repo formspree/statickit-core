@@ -1,29 +1,20 @@
 import Promise from 'promise-polyfill';
 import fetchPonyfill from 'fetch-ponyfill';
-import { camelizeTopKeys } from '../util';
+import { camelizeTopKeys, clientHeader } from '../util';
 import { GenericResponse, FunctionOptions } from '../functions';
-import { version } from '../../package.json';
-
-const clientHeader = ({ clientName }: FunctionOptions) => {
-  const label = `@statickit/core@${version}`;
-  if (!clientName) return label;
-  return `${clientName} ${label}`;
-};
 
 export default function invoke(
+  site: string,
   name: string,
   args: object,
-  options: FunctionOptions
+  opts: FunctionOptions = {}
 ): Promise<GenericResponse> {
-  if (!options.site) throw new Error('`site` is required');
-
-  let endpoint = options.endpoint || 'https://api.statickit.com';
-  let fetchImpl = options.fetchImpl || fetchPonyfill({ Promise }).fetch;
-  let site = options.site;
+  let endpoint = opts.endpoint || 'https://api.statickit.com';
+  let fetchImpl = opts.fetchImpl || fetchPonyfill({ Promise }).fetch;
   let url = `${endpoint}/j/sites/${site}/functions/${name}/invoke`;
 
   let headers: { [key: string]: string } = {
-    'StaticKit-Client': clientHeader(options),
+    'StaticKit-Client': clientHeader(opts.clientName),
     'Content-Type': 'application/json'
   };
 

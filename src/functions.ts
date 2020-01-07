@@ -3,7 +3,6 @@ export interface GenericArgs {
 }
 
 export interface FunctionOptions {
-  site?: string;
   endpoint?: string;
   clientName?: string;
   fetchImpl?: typeof fetch;
