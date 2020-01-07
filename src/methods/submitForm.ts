@@ -1,7 +1,12 @@
 import Promise from 'promise-polyfill';
 import fetchPonyfill from 'fetch-ponyfill';
 import objectAssign from 'object-assign';
-import { SubmissionOptions, SubmissionBody, SubmissionResult } from '../forms';
+import {
+  SubmissionData,
+  SubmissionOptions,
+  SubmissionBody,
+  SubmissionResponse
+} from '../forms';
 import { encode, append, clientHeader } from '../util';
 import { Session } from '../session';
 
@@ -10,7 +15,7 @@ const now = (): number => {
   return 1 * new Date();
 };
 
-const serializeBody = (data: FormData | object): FormData | string => {
+const serializeBody = (data: SubmissionData): FormData | string => {
   if (data instanceof FormData) return data;
   return JSON.stringify(data);
 };
@@ -19,9 +24,9 @@ export default function submitForm(
   site: string,
   session: Session,
   key: string,
-  data: FormData | object,
+  data: SubmissionData,
   opts: SubmissionOptions = {}
-): Promise<SubmissionResult> {
+): Promise<SubmissionResponse> {
   let endpoint = opts.endpoint || 'https://api.statickit.com';
   let fetchImpl = opts.fetchImpl || fetchPonyfill({ Promise }).fetch;
   let url = `${endpoint}/j/sites/${site}/forms/${key}/submissions`;
@@ -49,7 +54,7 @@ export default function submitForm(
 
   return fetchImpl(url, request).then(response => {
     return response.json().then(
-      (body: SubmissionBody): SubmissionResult => {
+      (body: SubmissionBody): SubmissionResponse => {
         return { body, response };
       }
     );

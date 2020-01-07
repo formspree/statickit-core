@@ -1,4 +1,4 @@
-export interface GenericArgs {
+export interface FunctionArgs {
   [key: string]: any;
 }
 
@@ -8,7 +8,7 @@ export interface FunctionOptions {
   fetchImpl?: typeof fetch;
 }
 
-export interface GenericSuccess {
+export interface FunctionSuccess {
   status: 'ok';
 }
 
@@ -38,15 +38,15 @@ export interface RuntimeError {
 }
 
 export type Failure = InvalidArgs | InvalidConfig | RuntimeError;
-export type GenericResponse = GenericSuccess | Failure;
+export type FunctionResponse = FunctionSuccess | Failure;
 
 export namespace SendNotification {
-  export interface Args extends GenericArgs {
+  export interface Args extends FunctionArgs {
     subject: string;
     replyTo?: string;
     fields?: object;
   }
 
-  export interface Success extends GenericSuccess {}
+  export interface Success extends FunctionSuccess {}
   export type Response = Success | Failure;
 }

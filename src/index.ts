@@ -1,7 +1,7 @@
 import submitForm from './methods/submitForm';
 import invoke from './methods/invoke';
-import { GenericArgs, GenericResponse, FunctionOptions } from './functions';
-import { SubmissionOptions, SubmissionResult } from './forms';
+import { FunctionArgs, FunctionOptions, FunctionResponse } from './functions';
+import { SubmissionData, SubmissionOptions, SubmissionResponse } from './forms';
 import { Session } from './session';
 
 export interface Config {
@@ -33,9 +33,9 @@ export class StaticKit {
    */
   submitForm(
     key: string,
-    data: FormData | object,
+    data: SubmissionData,
     opts: SubmissionOptions = {}
-  ): Promise<SubmissionResult> {
+  ): Promise<SubmissionResponse> {
     return submitForm(this.site, this.session, key, data, opts);
   }
 
@@ -48,9 +48,9 @@ export class StaticKit {
    */
   invoke(
     name: string,
-    args: GenericArgs,
+    args: FunctionArgs,
     opts: FunctionOptions = {}
-  ): Promise<GenericResponse> {
+  ): Promise<FunctionResponse> {
     return invoke(this.site, name, args, opts);
   }
 }

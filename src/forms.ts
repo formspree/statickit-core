@@ -1,15 +1,17 @@
+export type SubmissionData = FormData | object;
+
 export interface SubmissionOptions {
   endpoint?: string;
   clientName?: string;
   fetchImpl?: typeof fetch;
 }
 
-interface SuccessResponse {
+interface SuccessBody {
   id: string;
   data: object;
 }
 
-interface ErrorResponse {
+interface ErrorBody {
   errors: Array<{
     field: string;
     message: string;
@@ -18,9 +20,9 @@ interface ErrorResponse {
   }>;
 }
 
-export type SubmissionBody = SuccessResponse | ErrorResponse;
+export type SubmissionBody = SuccessBody | ErrorBody;
 
-export interface SubmissionResult {
+export interface SubmissionResponse {
   body: SubmissionBody;
   response: Response;
 }
