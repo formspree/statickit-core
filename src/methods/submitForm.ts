@@ -1,7 +1,7 @@
 import Promise from 'promise-polyfill';
 import fetchPonyfill from 'fetch-ponyfill';
 import objectAssign from 'object-assign';
-import { SubmissionProps, SubmissionBody, SubmissionResult } from '../forms';
+import { SubmissionArgs, SubmissionBody, SubmissionResult } from '../forms';
 import { encode, append } from '../util';
 import { version } from '../../package.json';
 import { Session } from '../session';
@@ -16,9 +16,9 @@ const serializeBody = (data: FormData | object): FormData | string => {
   return JSON.stringify(data);
 };
 
-const submissionUrl = (props: SubmissionProps) => {
-  const { id, site, form } = props;
-  const endpoint = props.endpoint || 'https://api.statickit.com';
+const submissionUrl = (args: SubmissionArgs) => {
+  const { id, site, form } = args;
+  const endpoint = args.endpoint || 'https://api.statickit.com';
 
   if (site && form) {
     return `${endpoint}/j/sites/${site}/forms/${form}/submissions`;
@@ -27,7 +27,7 @@ const submissionUrl = (props: SubmissionProps) => {
   }
 };
 
-const clientHeader = ({ clientName }: SubmissionProps) => {
+const clientHeader = ({ clientName }: SubmissionArgs) => {
   const label = `@statickit/core@${version}`;
   if (!clientName) return label;
   return `${clientName} ${label}`;
@@ -35,15 +35,15 @@ const clientHeader = ({ clientName }: SubmissionProps) => {
 
 export default function submitForm(
   session: Session,
-  props: SubmissionProps
+  args: SubmissionArgs
 ): Promise<SubmissionResult> {
-  if (!props.id && !(props.site && props.form)) {
+  if (!args.id && !(args.site && args.form)) {
     throw new Error('`site` and `form` properties are required');
   }
 
-  let fetchImpl = props.fetchImpl || fetchPonyfill({ Promise }).fetch;
-  let url = submissionUrl(props);
-  let data = props.data || {};
+  let fetchImpl = args.fetchImpl || fetchPonyfill({ Promise }).fetch;
+  let url = submissionUrl(args);
+  let data = args.data || {};
   let sessionWithTime = objectAssign({}, session.data(), {
     submittedAt: now()
   });
@@ -51,7 +51,7 @@ export default function submitForm(
   append(data, '_t', encode(sessionWithTime));
 
   let headers: { [key: string]: string } = {
-    'StaticKit-Client': clientHeader(props)
+    'StaticKit-Client': clientHeader(args)
   };
 
   if (!(data instanceof FormData)) {
