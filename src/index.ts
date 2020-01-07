@@ -1,8 +1,7 @@
-import submitForm, {
-  Props as SubmitFormProps,
-  Result as SubmitFormResult
-} from './methods/submitForm';
-
+import submitForm from './methods/submitForm';
+import invoke from './methods/invoke';
+import { GenericArgs, GenericResponse, FunctionOptions } from './functions';
+import { SubmissionArgs, SubmissionResult } from './forms';
 import { Session } from './session';
 
 export interface Config {
@@ -11,53 +10,50 @@ export interface Config {
 
 export class StaticKit {
   site: string | undefined;
-  private _session: Session;
-  private _onMouseMove: () => void;
-  private _onKeyDown: () => void;
+  private session: Session;
 
-  constructor(props: Config) {
-    this.site = props.site;
-
-    this._session = {
-      // @ts-ignore
-      loadedAt: 1 * new Date(),
-      mousemove: 0,
-      keydown: 0,
-      webdriver:
-        navigator.webdriver ||
-        !!document.documentElement.getAttribute('webdriver') ||
-        // @ts-ignore
-        !!window.callPhantom ||
-        // @ts-ignore
-        !!window._phantom
-    };
-
-    this._onMouseMove = () => {
-      this._session.mousemove += 1;
-    };
-
-    this._onKeyDown = () => {
-      this._session.keydown += 1;
-    };
-
-    window.addEventListener('mousemove', this._onMouseMove);
-    window.addEventListener('keydown', this._onKeyDown);
+  constructor(config: Config) {
+    this.site = config.site;
+    this.session = new Session();
   }
 
+  /**
+   * Teardown the client session.
+   */
   teardown(): void {
-    window.removeEventListener('mousemove', this._onMouseMove);
-    window.removeEventListener('keydown', this._onKeyDown);
+    this.session.teardown();
   }
 
-  submitForm(props: SubmitFormProps = {}): Promise<SubmitFormResult> {
-    props.site || (props.site = this.site);
-    return submitForm(this._session, props);
+  /**
+   * Submit a form.
+   *
+   * @param args - An object of form submission data.
+   */
+  submitForm(args: SubmissionArgs): Promise<SubmissionResult> {
+    args.site || (args.site = this.site);
+    return submitForm(this.session, args);
+  }
+
+  /**
+   * Invoke a function.
+   *
+   * @param name - The function name.
+   * @param args - An object of function arguments.
+   * @param opts - An object of options.
+   */
+  invoke(
+    name: string,
+    args: GenericArgs,
+    opts: FunctionOptions = {}
+  ): Promise<GenericResponse> {
+    opts.site || (opts.site = this.site);
+    return invoke(name, args, opts);
   }
 }
 
 /**
  * Constructs the client object.
  */
-export const createClient = (props?: Config): StaticKit => {
-  return new StaticKit(props || {});
+export const createClient = (config?: Config): StaticKit => {
+  return new StaticKit(config || {});
 };

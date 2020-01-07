@@ -3,8 +3,9 @@
 ## 2.0.0
 
 - Migrate to TypeScript
-- Accept `site` config when instantiating the client
-- Export a `createClient` function (instead of a default value)
+- Accept `site` option in factory
+- Add `invoke` method to client
+- **Breaking change**: Export a `createClient` factory function (instead of as a default value)
 
 ## 1.5.0
 
