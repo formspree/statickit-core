@@ -1,7 +1,13 @@
-import submitForm from './methods/submitForm';
-import invoke from './methods/invoke';
+import Promise from 'promise-polyfill';
+import fetchPonyfill from 'fetch-ponyfill';
 import { FunctionArgs, FunctionOptions, FunctionResponse } from './functions';
-import { SubmissionData, SubmissionOptions, SubmissionResponse } from './forms';
+import {
+  SubmissionData,
+  SubmissionOptions,
+  SubmissionBody,
+  SubmissionResponse
+} from './forms';
+import { camelizeTopKeys, clientHeader, encode64, append } from './utils';
 import { Session } from './session';
 
 export interface Config {
@@ -36,7 +42,39 @@ export class StaticKit {
     data: SubmissionData,
     opts: SubmissionOptions = {}
   ): Promise<SubmissionResponse> {
-    return submitForm(this.site, this.session, key, data, opts);
+    let endpoint = opts.endpoint || 'https://api.statickit.com';
+    let fetchImpl = opts.fetchImpl || fetchPonyfill({ Promise }).fetch;
+    let url = `${endpoint}/j/sites/${this.site}/forms/${key}/submissions`;
+
+    const serializeBody = (data: SubmissionData): FormData | string => {
+      if (data instanceof FormData) return data;
+      return JSON.stringify(data);
+    };
+
+    append(data, '_t', encode64(this.session.data()));
+
+    let headers: { [key: string]: string } = {
+      'StaticKit-Client': clientHeader(opts.clientName)
+    };
+
+    if (!(data instanceof FormData)) {
+      headers['Content-Type'] = 'application/json';
+    }
+
+    let request = {
+      method: 'POST',
+      mode: 'cors' as const,
+      body: serializeBody(data),
+      headers
+    };
+
+    return fetchImpl(url, request).then(response => {
+      return response.json().then(
+        (body: SubmissionBody): SubmissionResponse => {
+          return { body, response };
+        }
+      );
+    });
   }
 
   /**
@@ -51,7 +89,29 @@ export class StaticKit {
     args: FunctionArgs,
     opts: FunctionOptions = {}
   ): Promise<FunctionResponse> {
-    return invoke(this.site, name, args, opts);
+    let endpoint = opts.endpoint || 'https://api.statickit.com';
+    let fetchImpl = opts.fetchImpl || fetchPonyfill({ Promise }).fetch;
+    let url = `${endpoint}/j/sites/${this.site}/functions/${name}/invoke`;
+
+    let headers: { [key: string]: string } = {
+      'StaticKit-Client': clientHeader(opts.clientName),
+      'Content-Type': 'application/json'
+    };
+
+    let request = {
+      method: 'POST',
+      mode: 'cors' as const,
+      body: JSON.stringify({ args }),
+      headers
+    };
+
+    return fetchImpl(url, request).then(response => {
+      return response.json().then(
+        (body: FunctionResponse): FunctionResponse => {
+          return camelizeTopKeys(body) as FunctionResponse;
+        }
+      );
+    });
   }
 }
 

@@ -7,7 +7,7 @@ import { version } from '../package.json';
  *
  * @param obj - The object to encode.
  */
-export const encode = (obj: object): string => {
+export const encode64 = (obj: object): string => {
   return btoa(JSON.stringify(obj));
 };
 
@@ -71,4 +71,12 @@ export const clientHeader = (givenLabel: string | undefined): string => {
   const label = `@statickit/core@${version}`;
   if (!givenLabel) return label;
   return `${givenLabel} ${label}`;
+};
+
+/**
+ * The current timestamp.
+ */
+export const now = (): number => {
+  // @ts-ignore
+  return 1 * new Date();
 };

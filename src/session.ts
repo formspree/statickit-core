@@ -1,7 +1,4 @@
-const now = (): number => {
-  // @ts-ignore
-  return 1 * new Date();
-};
+import { now } from './utils';
 
 const webdriver = (): boolean => {
   return (

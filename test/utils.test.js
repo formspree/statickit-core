@@ -1,4 +1,4 @@
-import { toCamel, camelizeTopKeys } from '../src/util';
+import { toCamel, camelizeTopKeys } from '../src/utils';
 
 describe('toCamel', () => {
   it('converts snake case to camel', () => {
