@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.0
+
+- Add a `startBrowserSession` function to the client
+
+Now, you can safely run `createClient` on the server-side, because instantiation
+no longer relies on `window` being there 🎉
+
 ## 2.0.0
 
 - Migrate to TypeScript
