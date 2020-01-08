@@ -4,8 +4,9 @@
 
 - Migrate to TypeScript
 - Accept `site` option in factory
-- Add `invoke` method to client
+- Add `invokeFunction` method to client
 - **Breaking change**: Export a `createClient` factory function (instead of as a default value)
+- **Breaking change**: New argument structure for `submitForm` (using the form `key` is now required)
 
 ## 1.5.0
 
