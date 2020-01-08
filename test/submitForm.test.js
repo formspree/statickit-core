@@ -21,84 +21,82 @@ const success = new Promise((resolve, _reject) => {
   resolve(response);
 });
 
-describe('submitForm', () => {
-  it('resolves with body and response when successful', () => {
-    const mockFetch = (url, props) => {
-      expect(props.method).toEqual('POST');
-      expect(props.mode).toEqual('cors');
-      expect(url).toEqual(
-        'https://api.statickit.com/j/sites/111/forms/newsletter/submissions'
-      );
-      return success;
-    };
+it('resolves with body and response when successful', () => {
+  const mockFetch = (url, props) => {
+    expect(props.method).toEqual('POST');
+    expect(props.mode).toEqual('cors');
+    expect(url).toEqual(
+      'https://api.statickit.com/j/sites/111/forms/newsletter/submissions'
+    );
+    return success;
+  };
 
-    return createClient({ site: '111' })
-      .submitForm(
-        'newsletter',
-        {},
-        {
-          fetchImpl: mockFetch
-        }
-      )
-      .then(({ body, response }) => {
-        expect(body.id).toEqual('xxx');
-        expect(response.status).toEqual(200);
-      })
-      .catch(e => {
-        throw e;
-      });
-  });
-
-  it('uses a default client header if none is given', () => {
-    const mockFetch = (_url, props) => {
-      expect(props.headers['StaticKit-Client']).toEqual(
-        `@statickit/core@${version}`
-      );
-
-      return success;
-    };
-
-    return createClient({ site: '111' }).submitForm(
+  return createClient({ site: '111' })
+    .submitForm(
       'newsletter',
       {},
       {
         fetchImpl: mockFetch
       }
+    )
+    .then(({ body, response }) => {
+      expect(body.id).toEqual('xxx');
+      expect(response.status).toEqual(200);
+    })
+    .catch(e => {
+      throw e;
+    });
+});
+
+it('uses a default client header if none is given', () => {
+  const mockFetch = (_url, props) => {
+    expect(props.headers['StaticKit-Client']).toEqual(
+      `@statickit/core@${version}`
     );
-  });
 
-  it('puts given client name in the client header', () => {
-    const mockFetch = (_url, props) => {
-      expect(props.headers['StaticKit-Client']).toEqual(
-        `my-client @statickit/core@${version}`
-      );
+    return success;
+  };
 
-      return success;
-    };
+  return createClient({ site: '111' }).submitForm(
+    'newsletter',
+    {},
+    {
+      fetchImpl: mockFetch
+    }
+  );
+});
 
-    return createClient({ site: '111' }).submitForm(
-      'newsletter',
-      {},
-      {
-        clientName: 'my-client',
-        fetchImpl: mockFetch
-      }
+it('puts given client name in the client header', () => {
+  const mockFetch = (_url, props) => {
+    expect(props.headers['StaticKit-Client']).toEqual(
+      `my-client @statickit/core@${version}`
     );
-  });
 
-  it('sets content type to json if data is not FormData', () => {
-    const mockFetch = (_url, props) => {
-      expect(props.headers['Content-Type']).toEqual('application/json');
+    return success;
+  };
 
-      const parsedBody = JSON.parse(props.body);
-      expect(parsedBody.foo).toEqual('bar');
-      return success;
-    };
+  return createClient({ site: '111' }).submitForm(
+    'newsletter',
+    {},
+    {
+      clientName: 'my-client',
+      fetchImpl: mockFetch
+    }
+  );
+});
 
-    return createClient({ site: '111' }).submitForm(
-      'newsletter',
-      { foo: 'bar' },
-      { fetchImpl: mockFetch }
-    );
-  });
+it('sets content type to json if data is not FormData', () => {
+  const mockFetch = (_url, props) => {
+    expect(props.headers['Content-Type']).toEqual('application/json');
+
+    const parsedBody = JSON.parse(props.body);
+    expect(parsedBody.foo).toEqual('bar');
+    return success;
+  };
+
+  return createClient({ site: '111' }).submitForm(
+    'newsletter',
+    { foo: 'bar' },
+    { fetchImpl: mockFetch }
+  );
 });

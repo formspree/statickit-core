@@ -84,7 +84,7 @@ export class StaticKit {
    * @param args - An object of function arguments.
    * @param opts - An object of options.
    */
-  invoke(
+  invokeFunction(
     name: string,
     args: FunctionArgs,
     opts: FunctionOptions = {}
