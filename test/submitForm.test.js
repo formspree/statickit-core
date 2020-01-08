@@ -91,6 +91,7 @@ it('sets content type to json if data is not FormData', () => {
 
     const parsedBody = JSON.parse(props.body);
     expect(parsedBody.foo).toEqual('bar');
+    expect(parsedBody._t).toBeUndefined();
     return success;
   };
 
@@ -99,4 +100,18 @@ it('sets content type to json if data is not FormData', () => {
     { foo: 'bar' },
     { fetchImpl: mockFetch }
   );
+});
+
+it('sends telemetry data if session is started', () => {
+  const mockFetch = (_url, props) => {
+    expect(props.headers['Content-Type']).toEqual('application/json');
+
+    const parsedBody = JSON.parse(props.body);
+    expect(parsedBody._t).toBeDefined();
+    return success;
+  };
+
+  const client = createClient({ site: '111' });
+  client.startBrowserSession();
+  return client.submitForm('newsletter', {}, { fetchImpl: mockFetch });
 });

@@ -16,18 +16,26 @@ export interface Config {
 
 export class StaticKit {
   site: string;
-  private session: Session;
+  private session: Session | undefined;
 
   constructor(config: Config) {
     this.site = config.site;
-    this.session = new Session();
+  }
+
+  /**
+   * Starts a browser session.
+   */
+  startBrowserSession(): void {
+    if (!this.session) {
+      this.session = new Session();
+    }
   }
 
   /**
    * Teardown the client session.
    */
   teardown(): void {
-    this.session.teardown();
+    if (this.session) this.session.teardown();
   }
 
   /**
@@ -51,7 +59,9 @@ export class StaticKit {
       return JSON.stringify(data);
     };
 
-    append(data, '_t', encode64(this.session.data()));
+    if (this.session) {
+      append(data, '_t', encode64(this.session.data()));
+    }
 
     let headers: { [key: string]: string } = {
       'StaticKit-Client': clientHeader(opts.clientName)
