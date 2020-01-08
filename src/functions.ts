@@ -44,7 +44,7 @@ export namespace SendNotification {
   export interface Args extends FunctionArgs {
     subject: string;
     replyTo?: string;
-    fields?: object;
+    fields: object;
   }
 
   export interface Success extends FunctionSuccess {}
