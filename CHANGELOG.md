@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.0
+
+- Update function failure types
+
 ## 2.1.0
 
 - Add a `startBrowserSession` function to the client

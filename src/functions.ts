@@ -12,22 +12,24 @@ export interface FunctionSuccess {
   status: 'ok';
 }
 
-export interface InvalidArgs {
-  status: 'invalidArgs';
+export interface ArgumentError {
+  status: 'argumentError';
+  message?: string;
   errors: Array<{
     field: string;
     message: string;
-    code: string | null;
+    code?: string;
     properties: object;
   }>;
 }
 
-export interface InvalidConfig {
-  status: 'invalidConfig';
+export interface ConfigError {
+  status: 'configError';
+  message?: string;
   errors: Array<{
     field: string;
     message: string;
-    code: string | null;
+    code?: string;
     properties: object;
   }>;
 }
@@ -37,5 +39,6 @@ export interface RuntimeError {
   message: string;
 }
 
-export type Failure = InvalidArgs | InvalidConfig | RuntimeError;
+export type Failure = ArgumentError | ConfigError | RuntimeError;
+
 export type FunctionResponse = FunctionSuccess | Failure;
