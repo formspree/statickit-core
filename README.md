@@ -1,6 +1,6 @@
 # StaticKit Core [![CircleCI](https://circleci.com/gh/unstacked/statickit-core.svg?style=svg)](https://circleci.com/gh/unstacked/statickit-core)
 
-The core library for [StaticKit](https://statickit.com).
+The core client library for [StaticKit](https://statickit.com/docs/core).
 
 ## Releasing
 
