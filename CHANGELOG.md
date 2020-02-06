@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.0
+
+- Move `fetch` and `Promise` polyfills to external `dependencies` (rather than bundled), which means `fetch` calls will be isomorphic (work in Node and browser environments)
+
 ## 2.2.0
 
 - Update function failure types
