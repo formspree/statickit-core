@@ -12,8 +12,7 @@ const plugins = [
     include: ['src/**/*']
   }),
   nodeResolve({
-    extensions,
-    browser: true
+    extensions
   }),
   commonjs(),
   json()
@@ -21,7 +20,8 @@ const plugins = [
 
 export default {
   input: './src/index.ts',
-  plugins: plugins,
+  external: ['fetch-ponyfill', 'promise-polyfill'],
+  plugins,
   output: [
     {
       format: 'cjs',
