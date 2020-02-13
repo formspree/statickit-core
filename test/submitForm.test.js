@@ -91,7 +91,6 @@ it('sets content type to json if data is not FormData', () => {
 
     const parsedBody = JSON.parse(props.body);
     expect(parsedBody.foo).toEqual('bar');
-    expect(parsedBody._t).toBeUndefined();
     return success;
   };
 

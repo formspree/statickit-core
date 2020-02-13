@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.4.0
+
+- Bundle an IIFE version of the library, for in-browser use
+- Auto-start browser session if `window` is present on init
+
 ## 2.3.0
 
 - Move `fetch` and `Promise` polyfills to external `dependencies` (rather than bundled), which means `fetch` calls will be isomorphic (work in Node and browser environments)

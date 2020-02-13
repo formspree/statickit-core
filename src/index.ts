@@ -20,6 +20,7 @@ export class StaticKit {
 
   constructor(config: Config) {
     this.site = config.site;
+    if (typeof window !== 'undefined') this.startBrowserSession();
   }
 
   /**
