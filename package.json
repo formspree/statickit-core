@@ -66,6 +66,7 @@
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^5.2.0",
     "sort-package-json": "^1.36.0",
     "tslib": "^1.10.0",
     "typescript": "^3.7.4"
