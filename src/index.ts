@@ -109,10 +109,12 @@ export class StaticKit {
       'Content-Type': 'application/json'
     };
 
+    let session = this.session ? encode64(this.session.data()) : null;
+
     let request = {
       method: 'POST',
       mode: 'cors' as const,
-      body: JSON.stringify({ args }),
+      body: JSON.stringify({ args, session }),
       headers
     };
 

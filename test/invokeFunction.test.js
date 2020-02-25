@@ -4,7 +4,11 @@ it('resolves with body and response when successful', () => {
   const mockFetch = (url, props) => {
     expect(props.method).toEqual('POST');
     expect(props.mode).toEqual('cors');
-    expect(props.body).toEqual(JSON.stringify({ args: { foo: 'bar' } }));
+
+    let decodedBody = JSON.parse(props.body);
+
+    expect(decodedBody.args).toEqual({ foo: 'bar' });
+    expect(decodedBody.session).not.toBeNull();
     expect(url).toEqual(
       'https://api.statickit.com/j/sites/xxxx/functions/myFunction/invoke'
     );
