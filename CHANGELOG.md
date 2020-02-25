@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.0
+
+- Low-level updates to session management.
+
 ## 1.5.0
 
 - Accept a `clientName` property to set in the `StaticKit-Client` header.
