@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.0
+
+- Low-level updates to session management.
+
 ## 2.4.0
 
 - Bundle an IIFE version of the library, for in-browser use
