@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.1
+
+- Update dependencies for security.
+
 ## 2.5.0
 
 - Low-level updates to session management.
